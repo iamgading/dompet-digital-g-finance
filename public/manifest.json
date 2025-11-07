@@ -1,0 +1,53 @@
+{
+  "name": "G-Finance",
+  "short_name": "G-Finance",
+  "description": "Dasbor finansial harian untuk mengelola saldo dan transaksi.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-g.svg",
+      "sizes": "256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Add",
+      "short_name": "Quick Add",
+      "description": "Tambah transaksi baru secara instan.",
+      "url": "/quick",
+      "icons": [
+        {
+          "src": "/icons/icon.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Lihat Saldo",
+      "short_name": "Saldo",
+      "description": "Buka ringkasan saldo pocket terakhir.",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/logo-g.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}

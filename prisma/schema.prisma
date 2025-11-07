@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Pocket {
+  id            String         @id @default(cuid())
+  name          String
+  icon          String?
+  color         String?
+  note          String?
+  monthlyBudget Int            @default(0)
+  goalAmount    Int            @default(0)
+  order         Int            @default(0)
+  isActive      Boolean        @default(true)
+  balance       Int            @default(0)
+  transactions  Transaction[]
+  recurrings    Recurring[]
+  profileId     String
+  profile       Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+
+model Transaction {
+  id        String    @id @default(cuid())
+  type      String
+  amount    Int
+  date      DateTime
+  note      String?
+  pocketId  String
+  source    String?
+  externalRef String?
+  pocket    Pocket    @relation(fields: [pocketId], references: [id], onDelete: Cascade)
+  profileId String
+  profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Recurring {
+  id         String   @id @default(cuid())
+  name       String
+  type       String
+  amount     Int
+  schedule   String
+  pocketId   String
+  nextRunAt  DateTime
+  lastRunAt  DateTime?
+  autoPost   Boolean  @default(true)
+  pocket     Pocket   @relation(fields: [pocketId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model UserPref {
+  id                String  @id @default(cuid())
+  currency          String  @default("IDR")
+  locale            String  @default("id-ID")
+  theme             String  @default("system")
+  pinHash           String?
+  biometricEnabled  Boolean @default(false)
+  passkeyCredentialId  String?
+  passkeyPublicKey     String?
+  passkeyCounter       Int?
+  passkeyTransports    String?
+  passkeyCurrentChallenge String?
+  uiAnimationsEnabled Boolean @default(true)
+  activeProfileId     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+enum ChatRole {
+  user
+  assistant
+}
+
+model ChatTurn {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  role      ChatRole
+  text      String
+  payload   Json?
+  session   ChatSession? @relation(fields: [sessionId], references: [id])
+  sessionId String?
+}
+
+model ChatSession {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  lastActiveAt DateTime @default(now())
+  state        Json
+  turns        ChatTurn[]
+}
+
+model Profile {
+  id        String        @id @default(cuid())
+  name      String
+  desc      String?
+  createdAt DateTime      @default(now())
+  pockets   Pocket[]
+  txns      Transaction[]
+}
+
+enum JournalType {
+  income
+  expense
+  transfer
+}
+
+model Journal {
+  id             String      @id @default(cuid())
+  createdAt      DateTime    @default(now())
+  type           JournalType
+  payload        Json
+  affectedTxnIds Json
+  undoToken      String      @unique
+}

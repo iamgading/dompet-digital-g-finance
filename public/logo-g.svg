@@ -1,0 +1,37 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paint0_linear" x1="16" y1="24" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <filter id="wallet_glow_small" x="40" y="34" width="72" height="72" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="32" fill="url(#paint0_linear)"/>
+  <g filter="url(#wallet_glow_small)">
+    <path
+      d="M76 44h30c4.418 0 8 3.582 8 8v22c0 4.418-3.582 8-8 8H76c-6.075 0-11-4.925-11-11V55c0-6.075 4.925-11 11-11Z"
+      fill="rgba(255,255,255,0.35)"
+    />
+  </g>
+  <path
+    d="M74 47h28c3.314 0 6 2.686 6 6v22c0 3.314-2.686 6-6 6H74c-4.418 0-8-3.582-8-8V55c0-4.418 3.582-8 8-8Z"
+    fill="#F8FAFC"
+    fill-opacity="0.78"
+  />
+  <path
+    d="M94 63c2.209 0 4 1.791 4 4s-1.791 4-4 4h-8c-2.209 0-4-1.791-4-4s1.791-4 4-4h8Z"
+    fill="#1D4ED8"
+    fill-opacity="0.9"
+  />
+  <path
+    d="M64 24C40.804 24 22 42.804 22 66s18.804 42 42 42c16.115 0 30.042-8.93 36.286-22.033H80V75h34.25c-.226 24.818-20.073 44-44.25 44C42.043 119 22 98.957 22 74S42.043 29 66.75 29c14.932 0 27.845 8.789 32.564 21.36l-10.448 5.186C84.55 43.791 75.203 37 64 37 46.879 37 33 50.879 33 68s13.879 31 31 31c12.61 0 23.464-7.289 27.621-17.5H80v-9.875h34.357C113.662 46.04 91.294 24 64 24Z"
+    fill="white"
+    fill-opacity="0.96"
+  />
+</svg>
