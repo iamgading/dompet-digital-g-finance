@@ -544,7 +544,7 @@ export function HomeDashboard({
               <p className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-300">
                 {t("dashboard.totalBalance", "Total Saldo")}
               </p>
-              <p className="mt-2 text-5xl font-semibold tabular-nums text-slate-900 dark:text-white">
+              <p className="mt-2 text-4xl font-semibold tabular-nums text-slate-900 leading-tight dark:text-white sm:text-5xl lg:text-6xl">
                 {formatCurrency(total)}
               </p>
               <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-cyan-400/50 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-700 dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-200">
