@@ -13,19 +13,26 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LANGUAGE_OPTIONS, normalizeLocale, translate } from "@/lib/i18n";
+import { LANGUAGE_OPTIONS, normalizeLocale, translate, type SupportedLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+
+type LanguageOption = {
+  locale: SupportedLocale;
+  label: string;
+  shortLabel?: string;
+};
 
 export function LanguageToggle() {
   const { pref, setPref, replacePref } = useUserPref();
   const [isPending, startTransition] = useTransition();
+  const languageOptions = LANGUAGE_OPTIONS as readonly LanguageOption[];
   const current = normalizeLocale(pref.locale);
-  const currentOption = LANGUAGE_OPTIONS.find((option) => option.locale === current) ?? LANGUAGE_OPTIONS[0];
+  const currentOption: LanguageOption = languageOptions.find((option) => option.locale === current) ?? languageOptions[0];
 
   const handleChange = (nextLocale: (typeof LANGUAGE_OPTIONS)[number]["locale"]) => {
     if (nextLocale === pref.locale) return;
     const previous = pref;
-    setPref({ locale: nextLocale });
+    setPref({ ...previous, locale: nextLocale });
 
     startTransition(async () => {
       const result = await updateUserPref({
@@ -71,7 +78,7 @@ export function LanguageToggle() {
         <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
           {translate(pref.locale, "language.toggle", "Ubah bahasa")}
         </DropdownMenuLabel>
-        {LANGUAGE_OPTIONS.map((option) => (
+        {languageOptions.map((option) => (
           <DropdownMenuItem
             key={option.locale}
             className={cn(

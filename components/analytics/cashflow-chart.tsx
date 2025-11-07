@@ -12,7 +12,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  type TooltipProps,
+  type TooltipContentProps,
 } from "recharts";
 import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
@@ -34,7 +34,7 @@ const expenseColor = "#f97316";
 const balanceColor = "#0ea5e9";
 const netColor = "#6366f1";
 
-type CashflowTooltipProps = TooltipProps<ValueType, NameType> & {
+type CashflowTooltipProps = TooltipContentProps<ValueType, NameType> & {
   formatCurrency: (value: number) => string;
   formatDateLabel: (label: string) => string;
 };
@@ -167,11 +167,6 @@ export function CashflowChart({ data }: CashflowChartProps) {
               if (value === "net") return "Selisih";
               return value;
             }}
-            payload={[
-              { value: "Pemasukan", type: "circle", color: incomeColor, dataKey: "income" },
-              { value: "Pengeluaran", type: "circle", color: expenseColor, dataKey: "expense" },
-              { value: "Saldo", type: "circle", color: balanceColor, dataKey: "balance" },
-            ]}
           />
           <ReferenceLine y={0} stroke="rgba(148, 163, 184, 0.4)" strokeDasharray="3 3" />
           <Area

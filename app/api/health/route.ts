@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { dbHealth } from "@/app/actions/health";
+import { checkDbHealth } from "@/lib/health";
 
 export async function GET() {
-  const result = await dbHealth();
+  const result = await checkDbHealth();
 
   const status = result.ok ? 200 : 503;
 

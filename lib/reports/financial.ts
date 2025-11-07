@@ -203,12 +203,12 @@ export function buildFinancialCsv(report: FinancialReportData): string {
       .map(csvEscape)
       .join(","),
   );
-  lines.push([]);
+  lines.push("");
   lines.push(["Ringkasan"].map(csvEscape).join(","));
   lines.push(["Total Pemasukan", formatCurrency(totals.income, locale, currency)].map(csvEscape).join(","));
   lines.push(["Total Pengeluaran", formatCurrency(totals.expense, locale, currency)].map(csvEscape).join(","));
   lines.push(["Surplus / Defisit", formatCurrency(totals.net, locale, currency)].map(csvEscape).join(","));
-  lines.push([]);
+  lines.push("");
 
   if (pocketTotals.length > 0) {
     lines.push(["Ringkasan per Pocket"].map(csvEscape).join(","));
@@ -225,7 +225,7 @@ export function buildFinancialCsv(report: FinancialReportData): string {
           .join(","),
       );
     }
-    lines.push([]);
+    lines.push("");
   }
 
   lines.push(["Tanggal", "Jenis", "Pocket", "Catatan", "Nominal", "Sumber", "ID"].map(csvEscape).join(","));
@@ -261,7 +261,7 @@ export async function buildFinancialPdf(report: FinancialReportData): Promise<Bu
   });
 
   return await new Promise<Buffer>((resolve, reject) => {
-    const doc = new PDFDocument({ size: "A4", margin: 48, font: null });
+    const doc = new PDFDocument({ size: "A4", margin: 48 });
     const chunks: Buffer[] = [];
 
     doc.on("data", (chunk) => chunks.push(chunk));
@@ -371,7 +371,7 @@ export async function buildFinancialPdf(report: FinancialReportData): Promise<Bu
     }
 
     if (transactions.length === 0) {
-      doc.text("Tidak ada transaksi pada periode ini.", { italic: true });
+      doc.text("Tidak ada transaksi pada periode ini.");
     }
 
     doc.end();

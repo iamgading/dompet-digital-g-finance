@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 import {
   buildFinancialCsv,
   buildFinancialPdf,
@@ -73,7 +75,9 @@ export async function GET(request: NextRequest) {
     }
 
     const pdfBuffer = await buildFinancialPdf(report);
-    return new NextResponse(pdfBuffer, {
+    const pdfBytes = new Uint8Array(pdfBuffer);
+
+    return new NextResponse(pdfBytes, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${filenameBase}.pdf"`,

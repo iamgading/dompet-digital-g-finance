@@ -21,6 +21,21 @@ type ModelName =
   | "Journal";
 
 type WhereClause = Record<string, any>;
+type ModelClient = ReturnType<typeof createModel>;
+
+type PrismaMock = {
+  profile: ModelClient;
+  pocket: ModelClient;
+  transaction: ModelClient;
+  recurring: ModelClient;
+  userPref: ModelClient;
+  chatSession: ModelClient;
+  chatTurn: ModelClient;
+  journal: ModelClient;
+  $transaction<T>(fn: (mock: PrismaMock) => Promise<T>): Promise<T>;
+  $queryRaw(): Promise<number>;
+  $disconnect(): Promise<void>;
+};
 
 function matchesWhere(row: Record<string, any>, where?: WhereClause): boolean {
   if (!where) return true;
@@ -173,23 +188,29 @@ function createModel(model: ModelName) {
   };
 }
 
-export const prisma = {
-  profile: createModel("Profile"),
-  pocket: createModel("Pocket"),
-  transaction: createModel("Transaction"),
-  recurring: createModel("Recurring"),
-  userPref: createModel("UserPref"),
-  chatSession: createModel("ChatSession"),
-  chatTurn: createModel("ChatTurn"),
-  journal: createModel("Journal"),
-  async $transaction<T>(fn: (client: typeof prisma) => Promise<T>) {
-    return fn(prisma);
-  },
-  async $queryRaw() {
-    return 1;
-  },
-  async $disconnect() {},
-};
+function createPrismaMock(): PrismaMock {
+  const client: PrismaMock = {
+    profile: createModel("Profile"),
+    pocket: createModel("Pocket"),
+    transaction: createModel("Transaction"),
+    recurring: createModel("Recurring"),
+    userPref: createModel("UserPref"),
+    chatSession: createModel("ChatSession"),
+    chatTurn: createModel("ChatTurn"),
+    journal: createModel("Journal"),
+    async $transaction<T>(fn: (mock: PrismaMock) => Promise<T>) {
+      return fn(client);
+    },
+    async $queryRaw() {
+      return 1;
+    },
+    async $disconnect() {},
+  };
+
+  return client;
+}
+
+export const prisma = createPrismaMock();
 
 export function resetPrismaMock() {
   resetTestDb();

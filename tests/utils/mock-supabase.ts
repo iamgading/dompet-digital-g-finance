@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import type { Database, getSupabaseAdminClient as GetSupabaseAdminClient } from "@/lib/supabase";
+import type { Database } from "@/lib/supabase";
 
 import {
   deleteAll,
@@ -323,8 +323,10 @@ class SupabaseClientMock {
 
 export const supabaseClientMock = new SupabaseClientMock();
 
+type SupabaseAdminClient = ReturnType<typeof import("@/lib/supabase")["getSupabaseAdminClient"]>;
+
 export function getMockSupabaseAdminClient() {
-  return supabaseClientMock as unknown as ReturnType<GetSupabaseAdminClient>;
+  return supabaseClientMock as unknown as SupabaseAdminClient;
 }
 
 export function resetSupabase() {

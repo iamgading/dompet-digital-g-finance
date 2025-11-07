@@ -1,8 +1,6 @@
-"use server";
-
 import { notFound } from "next/navigation";
 
-import { dbHealth } from "@/app/actions/health";
+import { checkDbHealth } from "@/lib/health";
 import { getSupabaseAdminClient } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +32,7 @@ export default async function DebugDbPage() {
     notFound();
   }
 
-  const [health, counts] = await Promise.all([dbHealth(), getCounts()]);
+  const [health, counts] = await Promise.all([checkDbHealth(), getCounts()]);
 
   const supabaseUrl = process.env.SUPABASE_URL ?? "not-set";
   const maskedUrl = supabaseUrl.replace(/(https:\/\/.{6}).+/, "$1…");
@@ -71,4 +69,3 @@ export default async function DebugDbPage() {
     </main>
   );
 }
-

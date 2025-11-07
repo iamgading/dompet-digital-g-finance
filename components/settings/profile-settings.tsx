@@ -32,7 +32,7 @@ interface ProfileSettingsProps {
 export function ProfileSettings({ initialPref }: ProfileSettingsProps) {
   const { pref, setPref, replacePref, formatCurrency, formatDate } = useUserPref();
   const { t } = useI18n();
-  const resolvedLocaleOptions = pref.locale.startsWith("en")
+  const resolvedLocaleOptions: typeof localeOptions = pref.locale.startsWith("en")
     ? [
         { value: "id-ID", label: "Indonesian" },
         { value: "en-US", label: "English" },
@@ -59,7 +59,7 @@ export function ProfileSettings({ initialPref }: ProfileSettingsProps) {
       setTheme(patch.theme);
     }
 
-      setPref(patch);
+    setPref(nextPref);
     setError(null);
     setMessage(null);
 

@@ -46,7 +46,6 @@ export default async function CalendarPage() {
             </div>
           }
         >
-          {/* @ts-expect-error Async Server Component */}
           <CalendarContent locale={locale} />
         </Suspense>
       </div>

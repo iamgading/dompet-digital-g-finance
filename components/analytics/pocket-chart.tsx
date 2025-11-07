@@ -13,7 +13,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  type TooltipProps,
+  type TooltipContentProps,
 } from "recharts";
 import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
@@ -67,27 +67,21 @@ function resolvePalette(theme: string | undefined): Palette {
   };
 }
 
-type PocketTooltipProps = TooltipProps<ValueType, NameType> & {
+type PocketTooltipProps = TooltipContentProps<ValueType, NameType> & {
   formatCurrency: (value: number) => string;
   formatDate: (input: Date | string, options?: Intl.DateTimeFormatOptions) => string;
   palette: Palette;
 };
 
-function PocketTooltip(props: PocketTooltipProps) {
-  const { formatCurrency, formatDate, palette } = props;
-  const typed = props as TooltipProps<ValueType, NameType> & {
-    payload?: Array<{ name?: string; dataKey?: string; value?: ValueType }>;
-    label?: NameType;
-  };
-  if (!typed.active || !typed.payload || typed.payload.length === 0) return null;
+function PocketTooltip({ active, payload, label, formatCurrency, formatDate, palette }: PocketTooltipProps) {
+  if (!active || !payload || payload.length === 0) return null;
 
-  const labelValue = typed.label;
-  const dateLabel = formatDate(labelValue as string, { day: "2-digit", month: "short" });
+  const dateLabel = formatDate(label as string, { day: "2-digit", month: "short" });
 
-  const income = typed.payload.find((entry) => entry.dataKey === "income")?.value ?? 0;
-  const expense = typed.payload.find((entry) => entry.dataKey === "expenseNegative")?.value ?? 0;
-  const net = typed.payload.find((entry) => entry.dataKey === "net")?.value ?? 0;
-  const balance = typed.payload.find((entry) => entry.dataKey === "balanceAfter")?.value ?? 0;
+  const income = payload.find((entry) => entry.dataKey === "income")?.value ?? 0;
+  const expense = payload.find((entry) => entry.dataKey === "expenseNegative")?.value ?? 0;
+  const net = payload.find((entry) => entry.dataKey === "net")?.value ?? 0;
+  const balance = payload.find((entry) => entry.dataKey === "balanceAfter")?.value ?? 0;
 
   return (
     <div
@@ -180,12 +174,6 @@ export function PocketChart({ data, formatCurrency, formatDate }: PocketChartPro
             verticalAlign="top"
             align="right"
             iconType="circle"
-            payload={[
-              { value: "Income", type: "circle", color: palette.incomeFill, dataKey: "income" },
-              { value: "Expense", type: "circle", color: palette.expenseFill, dataKey: "expenseNegative" },
-              { value: "Net", type: "line", color: palette.netStroke, dataKey: "net" },
-              { value: "Saldo", type: "line", color: palette.balanceStroke, dataKey: "balanceAfter" },
-            ]}
           />
           <ReferenceLine y={0} stroke={palette.grid} strokeDasharray="3 3" />
           <Area
